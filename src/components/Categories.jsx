@@ -1,15 +1,26 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 const Categories = ({ items }) => {
+
+    const [activeItem, setActiveItem] = useState(0)
+    const onSelectItem = (key) => {
+        setActiveItem(key)
+    }
+
     return (
         <div className="categories">
             <ul>
-                {items.map((name, key) => (
-                    <li onClick={ } key={`${name}_${key}`} className="active">{name}</li>
+                {items && items.map((name, key) => (
+                    <li
+                        onClick={() => onSelectItem(key)}
+                        key={key}
+                        className={`${activeItem === key ? 'active' : '' }`}
+                    >
+                        {name}
+                    </li>
                 ))}
             </ul>
         </div>
     );
 };
-// https://youtu.be/SZma4oQN8SY?t=5004
 export default Categories;
