@@ -1,12 +1,22 @@
 import React, {useEffect, useRef, useState} from 'react';
 
-const SortPopup = () => {
+const SortPopup = ({items}) => {
 
     const [visiblePopup, setVisiblePopup] = useState(false)
+    const [activeItem, setActiveItem] = useState(0)
+    const activeLabel = items[activeItem]
+    const sortRef = useRef();
+
+
+    const onSelectItem = (key) => {
+        setActiveItem(key)
+        setVisiblePopup(false)
+    }
+
+
     const toggleVisiblePopup = () => {
         setVisiblePopup(!visiblePopup)
     }
-    const sortRef = useRef();
 
     const handleOutsideCLick= (e) => {
          if (!e.path.includes(sortRef.current)) {
@@ -34,14 +44,20 @@ const SortPopup = () => {
                     />
                 </svg>
                 <b>Сортировка по:</b>
-                <span onClick={toggleVisiblePopup}>популярности</span>
+                <span onClick={toggleVisiblePopup}>{activeLabel}</span>
             </div>
             {visiblePopup &&
             <div className="sort__popup">
                 <ul>
-                    <li className="active">популярности</li>
-                    <li>цене</li>
-                    <li>алфавиту</li>
+                    {items && items.map((name, key) => (
+                        <li
+                            onClick={() => onSelectItem(key)}
+                            key={key}
+                            className={`${activeItem === key ? 'active' : '' }`}
+                        >
+                            {name}
+                        </li>
+                    ))}
                 </ul>
             </div>
             }
@@ -51,3 +67,4 @@ const SortPopup = () => {
 };
 
 export default SortPopup;
+
